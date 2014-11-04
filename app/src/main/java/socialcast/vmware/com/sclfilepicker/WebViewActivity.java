@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
@@ -43,15 +44,26 @@ public class WebViewActivity extends Activity {
     }
 
     private void initWebView() {
-        webView.setWebViewClient(new WebViewClient() {
 
+        final WebViewClient client = new WebViewClient() {
             @Override
             public void onPageStarted(final WebView view, final String url,
                                       final Bitmap favicon) {
                 final Uri uri = Uri.parse(url);
                 super.onPageStarted(view, url, favicon);
+                if (isSelectedFile(uri)) {
+                    view.stopLoading();
+                    Log.d("Selected file: ", uri.getQuery());
+                }
             }
-        });
+        };
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(client);
         webView.loadUrl("file:///android_asset/index.html");
+    }
+
+    private boolean isSelectedFile(final Uri uri) {
+        final String sclScheme = "scl-file-selected";
+        return uri.getScheme().startsWith(sclScheme);
     }
 }
