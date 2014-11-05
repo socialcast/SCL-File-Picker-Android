@@ -6,9 +6,11 @@
             function onLoad() {
                 var button = document.getElementById("click_me");
                 button.addEventListener("click", function() {
-                                            var fileRedirect = 'scl-file-selected://?filename="fileName.ext"&fileSize=1024&icon="happyface.jpg"';
-                                            alert(fileRedirect);
-                                            window.location = fileRedirect;
+                                        var fileRedirect = 'scl-file-selected://?filename=fileName.ext&fileSize=1024&icon=happyface.jpg&fileUrl=';
+                                        fileRedirect += encodeURI('https://domain.com/path/file.ext');
+                                        
+                                        alert(fileRedirect);
+                                        window.location = fileRedirect;
                                         });
             }
             
